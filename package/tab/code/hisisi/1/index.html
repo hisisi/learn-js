@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>tab-demo</title>
+
+    <style>
+        .newtab{
+            width: 600px;
+            margin: 0 auto;
+            height: 420px;
+            border: 1px solid #999999;
+            border-top-left-radius: .3em;
+            border-top-right-radius: .3em;
+            position: relative;
+        }
+        .newtab .triggers{
+            width: 200px;
+            height: 80px;
+            line-height: 80px;
+            cursor: pointer;
+            float: left;
+            display: inline-block;
+            text-align: center;
+            box-sizing: border-box;
+            border-bottom: 1px solid #999999;
+            border-right: 1px solid #999999;
+        }
+        .newtab .triggers:last-child{
+            border-right: none;
+        }
+        .newtab .active{
+            background: #7eb05b;
+        }
+
+        .newtab .contents{
+            width: 600px;
+            height: 340px;
+            position: absolute;
+            top: 80px;
+            left: 0;
+            padding: 10px;
+        }
+
+    </style>
+</head>
+<body>
+	<p>Tab 选项卡（第一阶段） By hisisi</p>
+    <div class="newtab">
+        <span class="triggers active">tab1</span>
+        <span class="triggers">tab2</span>
+        <span class="triggers">tab3</span>
+
+        <div class="contents">aaaaaaaa</div>
+        <div class="contents" style="display: none">bbbbbbbb</div>
+        <div class="contents" style="display: none">cccccccc</div>
+    </div>
+
+    <script>
+
+
+        (function(){
+            var newtab = document.getElementsByClassName('newtab')[0];
+            var triggers = newtab.getElementsByClassName('triggers');
+            var contents = newtab.getElementsByClassName('contents');
+            for(var i=0; i< triggers.length; i++){
+                triggers[i].index = i;
+                triggers[i].onclick = function(){
+                    var that = this;
+                    for(var i=0; i<triggers.length; i++){
+                        triggers[i].classList.remove('active');
+                        contents[i].style.display = 'none';
+                    }
+                    that.classList.add('active');
+                    contents[that.index].style.display = 'block';
+                }
+            }
+        })();
+
+        function getElemetsByClassName(node,className) {
+            if(node.getElementsByClassName) {
+                return node.getElementsByClassName(className);
+            } else {
+                var resulets = new Array();
+                var elems = node.getElementsByTagName("*");
+                for (var i=0; i<elems.length; i++){
+                    if(elems[i].className.indexOf(className) != -1){
+                        resulets[resulets.length] = elems[i];
+                    }
+                }
+                return resulets;
+            }
+        }
+
+    </script>
+</body>
+
+</html>
