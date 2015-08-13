@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>tab-demo</title>
+
+    <style>
+        .newtab{
+            width: 600px;
+            margin: 0 auto;
+            height: 420px;
+            border: 1px solid #999999;
+            border-top-left-radius: .3em;
+            border-top-right-radius: .3em;
+            position: relative;
+        }
+        .newtab .triggers{
+            width: 200px;
+            height: 80px;
+            line-height: 80px;
+            cursor: pointer;
+            float: left;
+            display: inline-block;
+            text-align: center;
+            box-sizing: border-box;
+            border-bottom: 1px solid #999999;
+            border-right: 1px solid #999999;
+        }
+        .newtab .triggers:last-child{
+            border-right: none;
+        }
+        .newtab .active{
+            background: #7eb05b;
+        }
+
+        .newtab .contents{
+            width: 600px;
+            height: 340px;
+            position: absolute;
+            top: 80px;
+            left: 0;
+            padding: 10px;
+        }
+
+    </style>
+</head>
+<body>
+	<p>Tab 选项卡（第五阶段） By hisisi</p>
+    <div class="newtab">
+        <span class="triggers">tab1</span>
+        <span class="triggers">tab2</span>
+        <span class="triggers">tab3</span>
+
+        <div class="contents">aaaaaaaa</div>
+        <div class="contents" style="display: none">bbbbbbbb</div>
+        <div class="contents" style="display: none">cccccccc</div>
+    </div>
+
+    <script>
+
+
+
+
+        function tab(obj){
+
+            function escapeRegExp(string){
+                return string.replace(/\./g, "");
+            }
+
+            var newtab = document.getElementsByClassName(escapeRegExp(obj.element))[0];
+            var triggers = newtab.getElementsByClassName(escapeRegExp(obj.triggers));
+            var contents = newtab.getElementsByClassName(escapeRegExp(obj.contents));
+
+            showTab(obj.activeIndex);
+
+            function showTab(num){
+                clearTriggersBg();
+                triggers[num].classList.add('active');
+                contents[num].style.display = 'block';
+            }
+
+            function clearTriggersBg(){
+                for(var i=0; i<triggers.length; i++){
+                    triggers[i].classList.remove('active');
+                    contents[i].style.display = 'none';
+                }
+            }
+
+
+            for(var i=0; i< triggers.length; i++){
+
+                triggers[i].index = i;
+                triggers[i].addEventListener(obj.triggerType,function(){
+                    var that = this;
+                    showTab(that.index);
+                    obj.onSwitch(that.index,triggers.length );
+                });
+            }
+
+        }
+
+        function getElemetsByClassName(node,className) {
+            if(node.getElementsByClassName) {
+                return node.getElementsByClassName(className);
+            } else {
+                var resulets = new Array();
+                var elems = node.getElementsByTagName("*");
+                for (var i=0; i<elems.length; i++){
+                    if(elems[i].className.indexOf(className) != -1){
+                        resulets[resulets.length] = elems[i];
+                    }
+                }
+                return resulets;
+            }
+        }
+
+        (function(){
+
+            tab({
+                element: '.newtab',
+                triggers: '.triggers',
+                contents: '.contents',
+                activeIndex: 1,
+                triggerType: 'click',
+                onSwitch: function (index, count) {
+                    alert( '当前索引是' + index+',' + 'tab总数是' + count +'!' );
+
+                }
+            });
+
+        })();
+
+    </script>
+</body>
+
+</html>
