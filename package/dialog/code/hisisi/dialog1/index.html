@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>DialogDemo</title>
+    <style>
+        .show-btn{
+            width: 120px;
+            height: 46px;
+            display: block;
+            margin: 20px auto;
+        }
+        .dialog{
+            position: absolute;
+            width: 680px;
+            height: 200px;
+            border: 10px solid #666666;
+            left: 50%;
+            margin-left: -340px;
+            top: 50%;
+            margin-top: -100px;
+        }
+        .dialog .title{
+            width: auto;
+            height: 25px;
+            padding: 20px;
+            line-height: 25px;
+            background-color: #ebebeb;
+            font-size: 20px;
+            margin: 0;
+            border-bottom: 2px solid #ccc;
+            position: relative;
+        }
+        .dialog .title .close-btn{
+            position: absolute;
+            display: block;
+            width: 30px;
+            height: 30px;
+            top: 10px;
+            right: 10px;
+        }
+        .dialog .content{
+            width: auto;
+            padding: 20px;
+            margin: 0;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button type="button" class="show-btn">Click me</button>
+
+    <div id="dialog" class="dialog hide">
+
+        <p class="title">
+            <span>我真的是标题啊</span>
+            <img class="close-btn" src="closeBtn.png">
+        </p>
+        <p class="content">我是内容我是内容我是内容</p>
+    </div>
+    <script>
+        (function(doc){
+
+            var btn = doc.querySelector('.show-btn'),
+                dialog = doc.querySelector('#dialog'),
+                closeBtn = doc.querySelector('.close-btn');
+
+            btn.addEventListener('click',function(){
+                dialog.classList.remove('hide');
+            })
+
+            closeBtn.addEventListener('click', function(){
+                dialog.classList.add('hide');
+            })
+
+
+        })(document.body);
+    </script>
+</body>
+</html>

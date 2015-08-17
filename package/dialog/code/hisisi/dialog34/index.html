@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>DialogDemo</title>
+    <style>
+        .show-btn{
+            width: 120px;
+            height: 46px;
+            display: block;
+            margin: 20px auto;
+        }
+        .dialog{
+            position: absolute;
+            width: 680px;
+            height: 200px;
+            border: 10px solid #666666;
+            left: 50%;
+            margin-left: -340px;
+            top: 50%;
+            margin-top: -100px;
+            opacity: 0;
+        }
+        .dialog .title{
+            width: auto;
+            height: 25px;
+            padding: 20px;
+            line-height: 25px;
+            background-color: #ebebeb;
+            font-size: 20px;
+            margin: 0;
+            border-bottom: 2px solid #ccc;
+            position: relative;
+        }
+        .dialog .title .close-btn{
+            position: absolute;
+            display: block;
+            width: 30px;
+            height: 30px;
+            top: 10px;
+            right: 10px;
+        }
+        .dialog .content{
+            width: auto;
+            padding: 20px;
+            margin: 0;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button type="button" class="show-btn">Click me</button>
+
+    <div id="dialog" class="dialog hide">
+
+        <p class="title">
+            <span>我真的是标题啊</span>
+            <img class="close-btn" src="closeBtn.png">
+        </p>
+        <p class="content">我是内容我是内容我是内容</p>
+    </div>
+    <script>
+        (function(doc){
+
+            dialog({
+                trigger: '.show-btn',
+                content: '<strong>哈哈</strong>',
+                effectShow: function ($element) {
+                    // 淡入显示
+                    fade(10, $element);
+                },
+                effectHide: function ($element) {
+                    // 淡出显示
+                    fade(-10, $element);
+                },
+                onClose: function (element) {
+                    console.log('关闭弹框咯')
+                }
+            })
+
+            function fade(sec,ele){
+                var speed = sec;
+                var alpha = ele.style.opacity * 100;
+                clearInterval(timer);
+                var timer = setInterval(function(){
+                    alpha += speed;
+                    if(alpha == 100 || alpha == 0){
+                        clearInterval(timer);
+                    }
+                    ele.style.opacity = alpha/100;
+                    if(speed < 0 && alpha == 0){
+                        ele.classList.add('hide');
+                    }
+                }, 30);
+            }
+
+            function dialog(options){
+
+                var opt = options || { };
+
+
+                var btn = doc.querySelector(opt.trigger),
+                    dialog = doc.querySelector('#dialog'),
+                    closeBtn = doc.querySelector('.close-btn'),
+                    content = doc.querySelector('.content');
+
+                btn.addEventListener('click',function(){
+                    if(dialog.classList.contains('hide')){
+                        dialog.classList.remove('hide');
+                        opt.effectShow(dialog);
+                    }
+                    content.innerHTML = opt.content;
+                })
+
+                closeBtn.addEventListener('click', function(){
+                    opt.effectHide(dialog);
+                    opt.onClose();
+                })
+
+                document.addEventListener('keydown',function(ev){
+                    if(!dialog.classList.contains('hide')){
+                        if(ev.which === 27){
+                            opt.effectHide(dialog);
+                            opt.onClose();
+                        }else{
+                            return;
+                        }
+                    }
+                })
+
+            }
+
+
+
+        })(document.body);
+    </script>
+</body>
+</html>
